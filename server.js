@@ -9,6 +9,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
+//instructs the server to look for files in the public folder
+app.use(express.static('public'));
 
 const { animals } = require("./data/animals.json");
 
@@ -142,7 +144,22 @@ app.post('/api/animals', (req, res) => {
   res.json(animal);
   }
 });
-
+ 
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
+});
+
+//serves the routes linking the HTML, CSS and JS files
+//the '/' route points us to the root route 
+//of the server to crea the the homepage for a server
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/zookeepers.html'));
 });
